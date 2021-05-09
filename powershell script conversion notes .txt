@@ -1,0 +1,15 @@
+#BATCH FILE CONVERSION
+
+##V1.0 WITH FORCE OF WLS INSTALL
+##
+
+##FOR HIDDEN SCREEN
+#PowerShell -WindowStyle Hidden -NoProfile....
+
+#EXECUTE POWERSHELL AS ADMIN
+#PowerShell -NoProfile -ExecutionPolicy Bypass -Command "& {Start-Process PowerShell -ArgumentList '-NoProfile -ExecutionPolicy Bypass -File ""c:\path\to\file\script.ps1""' -Verb RunAs}"
+
+####force windows linux subsystem , no restart required at time
+#dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+
+#wsl command can now be lauched as a prefix, alternatively for specific distros "wsl -d <distro>" can be used effectively. 

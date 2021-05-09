@@ -1,0 +1,19 @@
+
+				import os
+PYPID = os.environ('PINFO3')
+print(PYPID[1])
+
+PIP install
+libpython3-dev libpython3.8-dev python-pip-whl python3-dev
+  python3-setuptools python3-wheel python3.8-dev
+  
+ pyinstaller
+ pip install pyinstaller
+ 
+TODAY :
+INSTALL PLATFORM 
+		RECODE IN ALL PYTHON , TO INCLUDE DOCKER FORMATION.
+		SPLIT INTO 2 SECTIONS	PYINSTALLER CAPABLE, AND SECONDARY INSTALL AFTER FIRST DEPLOYS. 
+				LEARN PROGRESS BAR DURING INSTALLATION INSTALL- DOCKER PLATFORM IS TARGET. 
+				
+		
