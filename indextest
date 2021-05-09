@@ -1,0 +1,62 @@
+#!/usr/bin/bash
+# adding os.system capability to python program. 
+
+###########################################
+#GATHER PROCESS INFO FOR PYTHON INDEXING
+###########################################
+
+##STEP 1#########using the "ps" command , we limit processing by resting the search to only processes that currently dont have active terminals using -x.  then we filter the results with grep stating only show the line results containing our main program by name. we further ensure this with another pipe "|" to the head command , which we use to filter using -n with a value of 1 to state we only want to output the first line. This will give us a result without headers to mimic a python list of strings. we populate a variable with this for use with the python shell. Finally we pipe "|" one final time to the "sed" command to replace whitespace with "," for the next step.  
+
+	PINFO1=$(ps -x | grep EVL-Suitet.py | head -n 1 |sed -E 's/[[:space:]]+/", "/g')
+#output ex:", "10090", "?", "Sl", "0:00", "/usr/bin/python3", "/home/luciphronnaxtel/EVL-Suitet.py
+
+##STEP 2######### we then remove the excess characters at the front of our string. because for a python list we will need each column seperated by commas and wrapped in quotations. 
+
+	PINFO2=${PINFO1:4}
+#output ex: 10090", "?", "Sl", "0:00", "/usr/bin/python3", "/home/luciphronnaxtel/EVL-Suitet.py
+
+##STEP 3####### all items have been seperated with , but now we need to add the " to the begining of the first string , and the end of the last string to close them, and will also add in the brackets to align with python format of a list.  
+
+	PINFO3=$(echo "\"$PINFO2\"")
+#output ex: ["10090","?","Sl","0:00","/usr/bin/python3","/home/luciphronnaxtel/EVL-Suitet.py"]
+
+##STEP 4#######
+#we have our variable , however until it is exported it is local only to the bash shell. we use the export command to make it available to others
+
+	export PINFO3=$PINFO3
+
+###########################################
+#SWITCH TO PYTHON SHELL TO PROCESS INDEX
+##########################################
+
+
+#Py-STEP1#######
+#invoking python to pull the PID from the element index of 1 within the data collected in bash.
+
+#For surety across varying systems we call on the "which" command invoking the python binary from the system env, and exporting the full path to a variable we can use
+	PYBIN=$(which python3) 
+
+#we will use the "exec" command to invoke a binary from it's full path source within the system using the first variable.This will be done whilest detaching the env into a child process to better support the python shell. We will encase everything after the exec command within "" to capture the 2 variables within 1 line. After which we tell python to run all embeded code contained within the second variable $()  
+(exec "$PYBIN $(
+		 #import the python os module for use of cross data                                       between the os on localhost and the python shell
+       		import os
+		from os import environ
+		from os import fsdecode
+		from os import fsencode
+		from os import getcwd
+		getcwd() 
+		import sys
+		from sys import getfilesystemencoding
+		getsystemencoding() 
+		
+
+			PINFO3 = environ.get('PINFO3')
+			
+				
+#TESTING				INTERNAL_PYSHELL_PID = (PSLIST[1]) 
+
+		EOF) 
+	"
+)			
+
+
